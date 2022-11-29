@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="1.0"
+  modelName="Fake Pipe Thermal"
+  modelIdentifier="FakePipeThermal"
+  description="This model gives htc and fluid temp data for an exterior wall temperature"
+  generationTool="Reference FMUs (development build)"
+  guid="{D083415C-0907-40D5-A12F-8D45990322C3}"
+  numberOfContinuousStates="2"
+  numberOfEventIndicators="0">
+
+  <DefaultExperiment startTime="0" stopTime="20"/>
+
+  <ModelVariables>
+	<ScalarVariable name="time" valueReference="0" causality="internal" variability="continuous" description="Simulation time">
+	  <Real/>
+	</ScalarVariable>
+	<ScalarVariable name="contact_area_fixed_param" valueReference="1" causality="parameter" variability="fixed" description="contact area">
+	  <Real start="1" fixed="true"/>
+	</ScalarVariable>
+	<ScalarVariable name="wall_temp_cts_in" valueReference="2" causality="input" variability="continuous" description="wall temperature">
+	  <Real start="293.15"/>
+	</ScalarVariable>
+	<ScalarVariable name="fluid_temp_cts_out" valueReference="3" causality="output" variability="continuous" description="fluid temperature">
+	  <Real/>
+	</ScalarVariable>
+	<ScalarVariable name="fluid_htc_cts_out" valueReference="4" causality="output" variability="continuous" description="fluid htc">
+	  <Real/>
+	</ScalarVariable>
+  </ModelVariables>
+
+  <Implementation>
+    <CoSimulation_StandAlone>
+      <Capabilities canHandleVariableCommunicationStepSize="true" canHandleEvents="true"/>
+    </CoSimulation_StandAlone>
+  </Implementation>
+
+</fmiModelDescription>

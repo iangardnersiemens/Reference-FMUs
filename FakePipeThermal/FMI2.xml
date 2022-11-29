@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription
+  fmiVersion="2.0"
+  modelName="Fake Pipe Thermal"
+  description="This model gives htc and fluid temp data for an exterior wall temperature"
+  generationTool="Reference FMUs (development build)"
+  guid="{D083415C-0907-40D5-A12F-8D45990322C3}"
+  numberOfEventIndicators="0">
+
+  <ModelExchange
+    modelIdentifier="FakePipeThermal"
+    canNotUseMemoryManagementFunctions="true"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true">
+    <SourceFiles>
+      <File name="all.c"/>
+    </SourceFiles>
+  </ModelExchange>
+
+  <CoSimulation
+    modelIdentifier="FakePipeThermal"
+    canHandleVariableCommunicationStepSize="true"
+    canNotUseMemoryManagementFunctions="true"
+    canGetAndSetFMUstate="true"
+    canSerializeFMUstate="true">
+    <SourceFiles>
+      <File name="all.c"/>
+    </SourceFiles>
+  </CoSimulation>
+
+  <LogCategories>
+    <Category name="logEvents" description="Log events"/>
+    <Category name="logStatusError" description="Log error messages"/>
+  </LogCategories>
+
+  <DefaultExperiment startTime="0" stopTime="20" stepSize="1e-2"/>
+
+  <ModelVariables>
+    <ScalarVariable name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time">
+      <Real/>
+    </ScalarVariable>
+	  <ScalarVariable name="contact_area_fixed_param" valueReference="1" causality="parameter" variability="fixed" description="contact area">
+		  <Real start="1" fixed="true"/>
+	  </ScalarVariable>
+	  <ScalarVariable name="wall_temp_cts_in" valueReference="2" causality="input" variability="continuous" description="wall temperature">
+		  <Real start="293.15"/>
+	  </ScalarVariable>
+	  <ScalarVariable name="fluid_temp_cts_out" valueReference="3" causality="output" variability="continuous" description="fluid temperature">
+		  <Real/>
+	  </ScalarVariable>
+	  <ScalarVariable name="fluid_htc_cts_out" valueReference="4" causality="output" variability="continuous" description="fluid htc">
+		  <Real/>
+	  </ScalarVariable>
+  </ModelVariables>
+
+  <ModelStructure>
+    <Outputs>
+      <Unknown index="3" dependencies=""/>
+      <Unknown index="4" dependencies=""/>
+    </Outputs>
+	<InitialUnknowns>
+	  <Unknown index="3"/>
+	  <Unknown index="4"/>
+	</InitialUnknowns>
+  </ModelStructure>
+
+</fmiModelDescription>

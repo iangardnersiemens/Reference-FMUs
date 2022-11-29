@@ -79,7 +79,7 @@ if (${FMI_VERSION} LESS 3)
 ")
 endif ()
 
-set (MODEL_NAMES BouncingBall Dahlquist Stair Feedthrough VanDerPol)
+set (MODEL_NAMES BouncingBall Dahlquist Stair Feedthrough VanDerPol FakePipeThermal FakePipeThermalWithTerminals)
 
 if (${FMI_VERSION} GREATER 1 OR "${FMI_TYPE}" STREQUAL "CS")
   set (MODEL_NAMES ${MODEL_NAMES} Resource)
@@ -265,6 +265,18 @@ if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}/resources")
   set(ARCHIVE_FILES ${ARCHIVE_FILES} "resources")
 endif()
 
+# terminalsAndIcons
+set(TERMINALS_AND_ICONS_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${MODEL_NAME}/terminalsAndIcons.xml)
+
+if (EXISTS "${TERMINALS_AND_ICONS_FILE}")
+  add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+    ${TERMINALS_AND_ICONS_FILE}
+    "${FMU_BUILD_DIR}/terminalsAndIcons/terminalsAndIcons.xml"
+  )
+
+  set(ARCHIVE_FILES ${ARCHIVE_FILES} "terminalsAndIcons")
+endif()
+
 # delete unintended files from binaries (Release configuration only)
 if (MSVC)
   add_custom_command(TARGET ${TARGET_NAME} POST_BUILD COMMAND if $<CONFIG:Release> neq 0 (
@@ -288,3 +300,5 @@ endforeach(MODEL_NAME)
 
 # Examples
 include(examples/Examples.cmake)
+
+add_subdirectory(fmusim)
