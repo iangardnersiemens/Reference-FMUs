@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription fmiVersion="3.0" 
+                     modelName="Fake Pipe Thermal Array Vars with Terminals" 
+                     generationTool="Reference FMUs (development build)" 
+                     instantiationToken="{E083415C-0907-40D5-A12F-8D45990322C3}">
+
+  <ModelExchange
+    modelIdentifier="FakePipeThermalArrayVarsWithTerminals"
+    canGetAndSetFMUState="true"
+    canSerializeFMUState="true"/>
+
+  <CoSimulation
+    modelIdentifier="FakePipeThermalArrayVarsWithTerminals"
+    canGetAndSetFMUState="true"
+    canSerializeFMUState="true"
+    canHandleVariableCommunicationStepSize="true"
+    providesIntermediateUpdate="true"
+    canReturnEarlyAfterIntermediateUpdate="true"
+    fixedInternalStepSize="1e-2"/>
+
+  <LogCategories>
+    <Category name="logEvents" description="Log events"/>
+    <Category name="logStatusError" description="Log error messages"/>
+  </LogCategories>
+
+  <DefaultExperiment startTime="0" stopTime="20" stepSize="1e-2"/>
+
+  <ModelVariables>
+    <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
+    <Float64 name="contact_area_fixed_param" valueReference="1" description="contact area" causality="parameter" variability="fixed" initial="exact" start="1"/>
+    
+    <Float64 name="tcz1.wall_temp" valueReference="2" description="wall temperature" causality="input" variability="continuous" start="293.15 293.15 293.15 293.15 293.15">
+	    <Dimension valueReference="5"/>
+    </Float64>
+
+	<Float64 name="tcz1.fluid_temp" valueReference="3" description="fluid temperature" causality="output" variability="continuous">
+		<Dimension valueReference="5"/>
+	</Float64>
+
+	<Float64 name="tcz1.fluid_htc" valueReference="4" description="fluid htc" causality="output" variability="continuous">
+		<Dimension valueReference="5"/>
+	</Float64>
+
+	<UInt64 name="numberOfSegments" valueReference="5" description="Number of segments" causality="output" variability="constant"  start="5" />
+  </ModelVariables>
+
+  <ModelStructure>
+    <Output valueReference="3"/>
+	<Output valueReference="4"/>
+    <Output valueReference="5"/>
+    <InitialUnknown valueReference="3"/>
+    <InitialUnknown valueReference="4"/>
+  </ModelStructure>
+
+</fmiModelDescription>

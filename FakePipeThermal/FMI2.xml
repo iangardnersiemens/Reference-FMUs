@@ -40,7 +40,7 @@
       <Real/>
     </ScalarVariable>
 	  <ScalarVariable name="contact_area_fixed_param" valueReference="1" causality="parameter" variability="fixed" description="contact area">
-		  <Real start="1" fixed="true"/>
+		  <Real start="1"/>
 	  </ScalarVariable>
 	  <ScalarVariable name="wall_temp_cts_in" valueReference="2" causality="input" variability="continuous" description="wall temperature">
 		  <Real start="293.15"/>
