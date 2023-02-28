@@ -37,11 +37,17 @@
 		<Dimension valueReference="5"/>
 	</Float64>
 
-	<Float64 name="tcz1.fluid_htc" valueReference="4" description="fluid htc" causality="output" variability="continuous">
-		<Dimension valueReference="5"/>
-	</Float64>
+    <Float64 name="tcz1.fluid_htc" valueReference="4" description="fluid htc" causality="output" variability="continuous">
+	    <Dimension valueReference="5"/>
+    </Float64>
+    
+    <Float64 name="tcz1.mesh_vertices" valueReference="5" description="vertex positions of the thermal communication line" causality="output" variability="continuous"
+             start="0.0 0.0 0.0 0.0 0.0 0.2 0.0 0.0 0.4 0.0 0.0 0.6 0.0 0.0 0.8 0.0 0.0 1.0">
+		<Dimension valueReference="6"/>
+		<Dimension valueReference="3"/>
+    </Float64>
 
-	<UInt64 name="numberOfSegments" valueReference="5" description="Number of segments" causality="output" variability="constant"  start="5" />
+    <UInt64 name="tcz1.number_of_elements" valueReference="6" description="Number of elements in the thermal communication line" causality="output" variability="constant"  start="5" />
   </ModelVariables>
 
   <ModelStructure>

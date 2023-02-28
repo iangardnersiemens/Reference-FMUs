@@ -13,23 +13,28 @@ Status calculateValues(ModelInstance *comp) {
     return OK;
 }
 
-Status getFloat64(ModelInstance* comp, ValueReference vr, double *value, size_t *index) {
+Status getFloat64(ModelInstance* comp, ValueReference vr, double values[], size_t nValues, size_t* index) {
     calculateValues(comp);
     switch (vr) {
         case vr_time:
-            value[(*index)++] = comp->time;
+            ASSERT_NVALUES(1);
+            values[(*index)++] = comp->time;
             return OK;
         case vr_contact_area_fixed_param:
-            value[(*index)++] = M(contact_area_fixed_param);
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(contact_area_fixed_param);
             return OK;
         case vr_wall_temp_cts_in:
-            value[(*index)++] = M(wall_temp_cts_in);
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(wall_temp_cts_in);
             return OK;
         case vr_fluid_temp_cts_out:
-            value[(*index)++] = M(fluid_temp_cts_out);
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(fluid_temp_cts_out);
             return OK;
         case vr_fluid_htc_cts_out:
-            value[(*index)++] = M(fluid_htc_cts_out);
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(fluid_htc_cts_out);
             return OK;
         default:
             logError(comp, "Get Float64 is not allowed for value reference %u.", vr);
@@ -37,9 +42,10 @@ Status getFloat64(ModelInstance* comp, ValueReference vr, double *value, size_t 
     }
 }
 
-Status setFloat64(ModelInstance* comp, ValueReference vr, const double *value, size_t *index) {
+Status setFloat64(ModelInstance* comp, ValueReference vr, const double values[], size_t nValues, size_t* index) {
     switch (vr) {
         case vr_contact_area_fixed_param:
+            ASSERT_NVALUES(1);
 #if FMI_VERSION > 1
             if (comp->state != Instantiated &&
                 comp->state != InitializationMode) {
@@ -47,10 +53,11 @@ Status setFloat64(ModelInstance* comp, ValueReference vr, const double *value, s
                 return Error;
             }
 #endif
-            M(contact_area_fixed_param) = value[(*index)++];
+            M(contact_area_fixed_param) = values[(*index)++];
             return OK;
         case vr_wall_temp_cts_in:
-            M(wall_temp_cts_in) = value[(*index)++];
+            ASSERT_NVALUES(1);
+            M(wall_temp_cts_in) = values[(*index)++];
             return OK;
         default:
             logError(comp, "Set Float64 is not allowed for value reference %u.", vr);

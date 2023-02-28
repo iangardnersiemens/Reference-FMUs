@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fmiTerminalsAndIcons fmiVersion="3.0">
 	<Terminals>
-		<Terminal name="tcz1" matchingRule="sequence" terminalKind="simcenter.thermal.convective" description="convective thermal connection with wall temperature in and fluid temperature & HTC out">
+		<Terminal name="tcz1" matchingRule="sequence" terminalKind="simcenter.thermal.convective" description="convective thermal connection with wall temperature in and fluid temperature and HTC out">
 			<TerminalMemberVariable variableKind="signal" variableName="tcz1.wall_temp" />
 			<TerminalMemberVariable variableKind="signal" variableName="tcz1.fluid_temp" />
 			<TerminalMemberVariable variableKind="signal" variableName="tcz1.fluid_htc" />
+			<TerminalMemberVariable variableKind="signal" variableName="tcz1.mesh_vertices" />
+			<TerminalMemberVariable variableKind="signal" variableName="tcz1.number_of_elements" />
 		</Terminal>
 	</Terminals>
 </fmiTerminalsAndIcons>

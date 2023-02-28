@@ -19,7 +19,9 @@
 #define GET_FLOAT64
 #define GET_UINT64
 
-#define NUMBER_OF_SEGMENTS 5
+#define NUMBER_OF_ELEMENTS 5
+#define NUMBER_OF_VERTICES 6
+#define DIMENSION 3
 
 typedef enum {
     vr_time,
@@ -27,16 +29,18 @@ typedef enum {
 	vr_wall_temp_cts_in,
 	vr_fluid_temp_cts_out,
 	vr_fluid_htc_cts_out,
-    vr_number_of_segments_out
+    vr_mesh_vertices_out,
+    vr_number_of_elements_out
 } ValueReference;
 
 typedef struct {
 
     double contact_area_fixed_param;
-    double wall_temp_cts_in[NUMBER_OF_SEGMENTS];
-    double fluid_temp_cts_out[NUMBER_OF_SEGMENTS];
-    double fluid_htc_cts_out[NUMBER_OF_SEGMENTS];
-    unsigned long long number_of_segments;
+    double wall_temp_cts_in[NUMBER_OF_ELEMENTS];
+    double fluid_temp_cts_out[NUMBER_OF_ELEMENTS];
+    double fluid_htc_cts_out[NUMBER_OF_ELEMENTS];
+    double mesh_vertices_out[NUMBER_OF_VERTICES][DIMENSION];
+    unsigned long long number_of_elements;
 
 } ModelData;
 

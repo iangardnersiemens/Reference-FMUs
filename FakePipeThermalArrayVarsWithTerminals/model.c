@@ -3,44 +3,68 @@
 
 
 void setStartValues(ModelInstance *comp) {
+	const double start_mesh_vertices[NUMBER_OF_VERTICES][DIMENSION] = {
+    	{0.0, 0.0, 0.0},
+    	{0.0, 0.0, 0.2},
+        {0.0, 0.0, 0.4},
+        {0.0, 0.0, 0.6},
+        {0.0, 0.0, 0.8},
+        {0.0, 0.0, 1.0}
+    };
     M(contact_area_fixed_param) = 1;
-    for (int i = 0; i < NUMBER_OF_SEGMENTS; ++i)
+    for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i)
     {
         M(wall_temp_cts_in)[i] = 293.15;
     }
-    M(number_of_segments) = NUMBER_OF_SEGMENTS;
+    for (int j=0; j<NUMBER_OF_VERTICES; ++j)
+        for (int k=0; k<DIMENSION; ++k)
+            M(mesh_vertices_out)[j][k] = start_mesh_vertices[j][k];
+    M(number_of_elements) = NUMBER_OF_ELEMENTS;
 }
 
 Status calculateValues(ModelInstance* comp) {
-    for (int i = 0; i < NUMBER_OF_SEGMENTS; ++i) {
+    for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
         M(fluid_temp_cts_out)[i] = 293.15 + (M(wall_temp_cts_in)[i] - 293.15) * 0.1;
 		M(fluid_htc_cts_out)[i] = 10000 + (M(wall_temp_cts_in)[i] - 293.15) * 20.0;
 	}
     return OK;
 }
 
-Status getFloat64(ModelInstance* comp, ValueReference vr, double *value, size_t *index) {
+Status getFloat64(ModelInstance* comp, ValueReference vr, double values[], size_t nValues, size_t* index) {
     calculateValues(comp);
     switch (vr) {
         case vr_time:
-            value[(*index)++] = comp->time;
+            ASSERT_NVALUES(1);
+            values[(*index)++] = comp->time;
             return OK;
         case vr_contact_area_fixed_param:
-            value[(*index)++] = M(contact_area_fixed_param);
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(contact_area_fixed_param);
             return OK;
         case vr_wall_temp_cts_in:
-            for (int i = 0; i < NUMBER_OF_SEGMENTS; ++i) {
-                value[(*index)++] = M(wall_temp_cts_in)[i];
+            ASSERT_NVALUES(NUMBER_OF_ELEMENTS);
+            for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
+                values[(*index)++] = M(wall_temp_cts_in)[i];
             }
             return OK;
         case vr_fluid_temp_cts_out:
-            for (int i = 0; i < NUMBER_OF_SEGMENTS; ++i) {
-                value[(*index)++] = M(fluid_temp_cts_out)[i];
+            ASSERT_NVALUES(NUMBER_OF_ELEMENTS);
+            for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
+                values[(*index)++] = M(fluid_temp_cts_out)[i];
             }
             return OK;
         case vr_fluid_htc_cts_out:
-            for (int i = 0; i < NUMBER_OF_SEGMENTS; ++i) {
-                value[(*index)++] = M(fluid_htc_cts_out)[i];
+            ASSERT_NVALUES(NUMBER_OF_ELEMENTS);
+            for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
+                values[(*index)++] = M(fluid_htc_cts_out)[i];
+            }
+            return OK;
+        case vr_mesh_vertices_out:
+            ASSERT_NVALUES(NUMBER_OF_VERTICES * DIMENSION);
+            for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
+                for (int j = 0; j < DIMENSION; ++j) {
+                    values[(*index)++] = M(mesh_vertices_out)[i][j];
+                }
             }
             return OK;
         default:
@@ -49,9 +73,10 @@ Status getFloat64(ModelInstance* comp, ValueReference vr, double *value, size_t 
     }
 }
 
-Status setFloat64(ModelInstance* comp, ValueReference vr, const double *value, size_t *index) {
+Status setFloat64(ModelInstance* comp, ValueReference vr, const double values[], size_t nValues, size_t* index) {
     switch (vr) {
         case vr_contact_area_fixed_param:
+            ASSERT_NVALUES(1);
 #if FMI_VERSION > 1
             if (comp->state != Instantiated &&
                 comp->state != InitializationMode) {
@@ -59,11 +84,12 @@ Status setFloat64(ModelInstance* comp, ValueReference vr, const double *value, s
                 return Error;
             }
 #endif
-            M(contact_area_fixed_param) = value[(*index)++];
+            M(contact_area_fixed_param) = values[(*index)++];
             return OK;
         case vr_wall_temp_cts_in:
-            for (int i = 0; i < NUMBER_OF_SEGMENTS; ++i) {
-                M(wall_temp_cts_in)[i] = value[(*index)++];
+            ASSERT_NVALUES(NUMBER_OF_ELEMENTS);
+            for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
+                M(wall_temp_cts_in)[i] = values[(*index)++];
             }
             return OK;
         default:
@@ -72,11 +98,12 @@ Status setFloat64(ModelInstance* comp, ValueReference vr, const double *value, s
     }
 }
 
-Status getUInt64(ModelInstance* comp, ValueReference vr, uint64_t* value, size_t* index) {
+Status getUInt64(ModelInstance* comp, ValueReference vr, uint64_t values[], size_t nValues, size_t* index) {
     calculateValues(comp);
     switch (vr) {
-	    case vr_number_of_segments_out:
-            value[(*index)++] = M(number_of_segments);
+	    case vr_number_of_elements_out:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(number_of_elements);
 	        return OK;
 	    default:
 	        logError(comp, "Get UInt64 is not allowed for value reference %u.", vr);
