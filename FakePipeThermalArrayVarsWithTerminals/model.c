@@ -61,7 +61,7 @@ Status getFloat64(ModelInstance* comp, ValueReference vr, double values[], size_
             return OK;
         case vr_mesh_vertices_out:
             ASSERT_NVALUES(NUMBER_OF_VERTICES * DIMENSION);
-            for (int i = 0; i < NUMBER_OF_ELEMENTS; ++i) {
+            for (int i = 0; i < NUMBER_OF_VERTICES; ++i) {
                 for (int j = 0; j < DIMENSION; ++j) {
                     values[(*index)++] = M(mesh_vertices_out)[i][j];
                 }
