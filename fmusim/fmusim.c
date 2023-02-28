@@ -68,35 +68,30 @@ static void logMessage(FMIInstance* instance, FMIStatus status, const char* cate
 
 static FILE* s_fmiLogFile = NULL;
 
-static void logFunctionCall(FMIInstance* instance, FMIStatus status, const char* message, ...) {
+static void logFunctionCall(FMIInstance* instance, FMIStatus status, const char* message) {
 
     FILE* const stream = s_fmiLogFile ? s_fmiLogFile : stdout;
-
-    va_list args;
-    va_start(args, message);
     
-    vfprintf(stream, message, args);
+    fputs(message, stream);
     
-    va_end(args);
-
     switch (status) {
     case FMIOK:
-        fprintf(stream, " -> OK\n");
+        fputs(" -> OK\n", stream);
         break;
     case FMIWarning:
-        fprintf(stream, " -> Warning\n");
+        fputs(" -> Warning\n", stream);
         break;
     case FMIDiscard:
-        fprintf(stream, " -> Discard\n");
+        fputs(" -> Discard\n", stream);
         break;
     case FMIError:
-        fprintf(stream, " -> Error\n");
+        fputs(" -> Error\n", stream);
         break;
     case FMIFatal:
-        fprintf(stream, " -> Fatal\n");
+        fputs(" -> Fatal\n", stream);
         break;
     case FMIPending:
-        fprintf(stream, " -> Pending\n");
+        fputs(" -> Pending\n", stream);
         break;
     default:
         fprintf(stream, " -> Unknown status (%d)\n", status);
@@ -224,7 +219,7 @@ FMIStatus applyStartValues(FMIInstance* S, const FMISimulationSettings* settings
             
             CALL(FMI3SetBinary(S, &vr, 1, &size, &value, 1));
             
-            free(value);
+            free((void*)value);
             
             continue;
         }
@@ -275,9 +270,9 @@ int main(int argc, const char* argv[]) {
 
     FMIInterfaceType interfaceType = -1;
 
-    char* inputFile = NULL;
-    char* outputFile = NULL;
-    char* fmiLogFile = NULL;
+    const char* inputFile = NULL;
+    const char* outputFile = NULL;
+    const char* fmiLogFile = NULL;
 
     const char* startTimeLiteral = NULL;
     const char* stopTimeLiteral = NULL;
@@ -285,13 +280,13 @@ int main(int argc, const char* argv[]) {
     double outputInterval = 0;
 
     size_t nStartValues = 0;
-    char** startNames = NULL;
-    char** startValues = NULL;
+    const char** startNames = NULL;
+    const char** startValues = NULL;
 
     size_t nOutputVariableNames = 0;
-    char** outputVariableNames = NULL;
+    const char** outputVariableNames = NULL;
 
-    char* solver = "euler";
+    const char* solver = "euler";
 
     FMIInstance* S = NULL;
     FMIRecorder* result = NULL;
@@ -319,13 +314,13 @@ int main(int argc, const char* argv[]) {
             }
             i++;
         } else if (!strcmp(v, "--start-value")) {
-            CALL(FMIRealloc(&startNames, sizeof(char*) * (nStartValues + 1)));
-            CALL(FMIRealloc(&startValues, sizeof(char*) * (nStartValues + 1)));
+            CALL(FMIRealloc((void**)&startNames, sizeof(char*) * (nStartValues + 1)));
+            CALL(FMIRealloc((void**)&startValues, sizeof(char*) * (nStartValues + 1)));
             startNames[nStartValues] = argv[++i];
             startValues[nStartValues] = argv[++i];
             nStartValues++;
         } else if (!strcmp(v, "--output-variable")) {
-            CALL(FMIRealloc(&outputVariableNames, sizeof(char*) * (nOutputVariableNames + 1)));
+            CALL(FMIRealloc((void**)&outputVariableNames, sizeof(char*) * (nOutputVariableNames + 1)));
             outputVariableNames[nOutputVariableNames] = argv[++i];
             nOutputVariableNames++;
         } else if (!strcmp(v, "--input-file")) {
@@ -452,7 +447,7 @@ int main(int argc, const char* argv[]) {
 
     for (size_t i = 0; i < modelDescription->nModelVariables; i++) {
 
-        const FMIModelVariable* variable = &modelDescription->modelVariables[i];
+        FMIModelVariable* variable = &modelDescription->modelVariables[i];
 
         if (nOutputVariableNames) {
 
