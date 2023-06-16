@@ -22,16 +22,20 @@ typedef enum {
     vr_time,
 	vr_contact_area_fixed_param,
 	vr_wall_temp_cts_in,
+    vr_some_other_cts_in,
 	vr_fluid_temp_cts_out,
-	vr_fluid_htc_cts_out
+	vr_fluid_htc_cts_out,
+    vr_some_other_cts_out
 } ValueReference;
 
 typedef struct {
 
     double contact_area_fixed_param;
     double wall_temp_cts_in;
+    double some_other_cts_in;
     double fluid_temp_cts_out;
     double fluid_htc_cts_out;
+    double some_other_cts_out;
 
 } ModelData;
 

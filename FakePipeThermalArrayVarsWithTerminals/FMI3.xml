@@ -34,9 +34,9 @@
 	    <Dimension valueReference="6"/>
     </Float64>
 
-	<Float64 name="tcz1.fluid_temp" valueReference="3" description="fluid temperature" causality="output" variability="continuous">
-		<Dimension valueReference="6"/>
-	</Float64>
+  	<Float64 name="tcz1.fluid_temp" valueReference="3" description="fluid temperature" causality="output" variability="continuous">
+  		<Dimension valueReference="6"/>
+  	</Float64>
 
     <Float64 name="tcz1.fluid_htc" valueReference="4" description="fluid htc" causality="output" variability="continuous">
 	    <Dimension valueReference="6"/>

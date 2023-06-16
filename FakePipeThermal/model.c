@@ -5,11 +5,13 @@
 void setStartValues(ModelInstance *comp) {
     M(contact_area_fixed_param) = 1;
     M(wall_temp_cts_in) = 293.15;
+    M(some_other_cts_in) = 100.0;
 }
 
 Status calculateValues(ModelInstance *comp) {
     M(fluid_temp_cts_out) = 293.15 + (M(wall_temp_cts_in) - 293.15) * 0.1;
     M(fluid_htc_cts_out) = 10000 + (M(wall_temp_cts_in) - 293.15) * 20.0;
+    M(some_other_cts_out) = M(some_other_cts_in);
     return OK;
 }
 
@@ -28,6 +30,10 @@ Status getFloat64(ModelInstance* comp, ValueReference vr, double values[], size_
             ASSERT_NVALUES(1);
             values[(*index)++] = M(wall_temp_cts_in);
             return OK;
+        case vr_some_other_cts_in:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(some_other_cts_in);
+            return OK;
         case vr_fluid_temp_cts_out:
             ASSERT_NVALUES(1);
             values[(*index)++] = M(fluid_temp_cts_out);
@@ -35,6 +41,10 @@ Status getFloat64(ModelInstance* comp, ValueReference vr, double values[], size_
         case vr_fluid_htc_cts_out:
             ASSERT_NVALUES(1);
             values[(*index)++] = M(fluid_htc_cts_out);
+            return OK;
+        case vr_some_other_cts_out:
+            ASSERT_NVALUES(1);
+            values[(*index)++] = M(some_other_cts_out);
             return OK;
         default:
             logError(comp, "Get Float64 is not allowed for value reference %u.", vr);
@@ -58,6 +68,10 @@ Status setFloat64(ModelInstance* comp, ValueReference vr, const double values[],
         case vr_wall_temp_cts_in:
             ASSERT_NVALUES(1);
             M(wall_temp_cts_in) = values[(*index)++];
+            return OK;
+        case vr_some_other_cts_in:
+            ASSERT_NVALUES(1);
+            M(some_other_cts_in) = values[(*index)++];
             return OK;
         default:
             logError(comp, "Set Float64 is not allowed for value reference %u.", vr);
