@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fmiModelDescription fmiVersion="3.0" modelName="van der Pol oscillator" generationTool="Reference FMUs (development build)" instantiationToken="{BD403596-3166-4232-ABC2-132BDF73E644}">
+<fmiModelDescription
+  fmiVersion="3.0"
+  modelName="van der Pol oscillator"
+  generationTool="Reference FMUs (development build)"
+  instantiationToken="{BD403596-3166-4232-ABC2-132BDF73E644}">
 
   <ModelExchange
     modelIdentifier="VanDerPol"
     canGetAndSetFMUState="true"
-    canSerializeFMUState="true"/>
+    canSerializeFMUState="true"
+    providesDirectionalDerivatives="true"
+    providesAdjointDerivatives="true"/>
 
   <CoSimulation
     modelIdentifier="VanDerPol"
@@ -13,7 +19,9 @@
     canHandleVariableCommunicationStepSize="true"
     providesIntermediateUpdate="true"
     canReturnEarlyAfterIntermediateUpdate="true"
-    fixedInternalStepSize="1e-2"/>
+    fixedInternalStepSize="1e-2"
+    providesDirectionalDerivatives="true"
+    providesAdjointDerivatives="true"/>
 
   <LogCategories>
     <Category name="logEvents" description="Log events"/>

@@ -1,3 +1,5 @@
+#include "FMIUtil.h"
+
 #include "fmusim_fmi2_cs.h"
 
 
@@ -22,14 +24,18 @@ FMIStatus simulateFMI2CS(
         fmi2False                             // loggingOn
     ));
 
-    // set start values
+    if (settings->initialFMUStateFile) {
+        CALL(FMIRestoreFMUStateFromFile(S, settings->initialFMUStateFile));
+    }
+
     CALL(applyStartValues(S, settings));
     CALL(FMIApplyInput(S, input, settings->startTime, true, true, false));
 
-    // initialize
-    CALL(FMI2SetupExperiment(S, fmi2False, 0.0, settings->startTime, fmi2True, settings->stopTime));
-    CALL(FMI2EnterInitializationMode(S));
-    CALL(FMI2ExitInitializationMode(S));
+    if (!settings->initialFMUStateFile) {
+        CALL(FMI2SetupExperiment(S, settings->tolerance > 0, settings->tolerance, settings->startTime, fmi2False, 0));
+        CALL(FMI2EnterInitializationMode(S));
+        CALL(FMI2ExitInitializationMode(S));
+    }
 
     for (unsigned long step = 0;; step++) {
         
@@ -67,15 +73,23 @@ FMIStatus simulateFMI2CS(
 
     }
 
+    if (settings->finalFMUStateFile) {
+        CALL(FMISaveFMUStateToFile(S, settings->finalFMUStateFile));
+    }
+
 TERMINATE:
 
-    if (status != FMIFatal) {
+    if (status < FMIError) {
 
         const FMIStatus terminateStatus = FMI2Terminate(S);
 
-        if (terminateStatus != FMIFatal) {
-            FMI2FreeInstance(S);
+        if (terminateStatus > status) {
+            status = terminateStatus;
         }
+    }
+
+    if (status != FMIFatal) {
+        FMI2FreeInstance(S);
     }
 
     return status;

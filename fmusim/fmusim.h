@@ -9,9 +9,12 @@ typedef struct {
     size_t nStartValues;
     const FMIModelVariable** startVariables;
     const char** startValues;
+    double tolerance;
     double startTime;
     double stopTime;
     double outputInterval;
+    const char* initialFMUStateFile;
+    const char* finalFMUStateFile;
 
     // Co-Simulation
     bool earlyReturnAllowed;

@@ -57,13 +57,13 @@ FMIStatus simulateFMI1ME(
     ));
 
     // initialize
-    CALL(FMI1Initialize(S, fmi1False, 0.0, &eventInfo));
+    CALL(FMI1Initialize(S, settings->tolerance > 0, settings->tolerance, &eventInfo));
 
     if (!eventInfo.upcomingTimeEvent) {
         eventInfo.nextEventTime = INFINITY;
     }
 
-    solver = settings->solverCreate(S, modelDescription, input, time);
+    solver = settings->solverCreate(S, modelDescription, input, settings->tolerance, time);
 
     if (!solver) {
         status = FMIError;
@@ -150,13 +150,17 @@ FMIStatus simulateFMI1ME(
 
 TERMINATE:
 
-    if (status != FMIFatal) {
+    if (status < FMIError) {
 
         const FMIStatus terminateStatus = FMI1Terminate(S);
 
-        if (terminateStatus != FMIFatal) {
-            FMI1FreeModelInstance(S);
+        if (terminateStatus > status) {
+            status = terminateStatus;
         }
+    }
+
+    if (status != FMIFatal) {
+        FMI1FreeModelInstance(S);
     }
 
     if (solver) {

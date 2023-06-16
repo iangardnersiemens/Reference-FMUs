@@ -30,7 +30,7 @@ FMIStatus simulateFMI1CS(
     CALL(FMIApplyInput(S, input, settings->startTime, true, true, false));
 
     // initialize
-    CALL(FMI1InitializeSlave(S, settings->startTime, fmi1True, settings->stopTime));
+    CALL(FMI1InitializeSlave(S, settings->startTime, fmi1False, 0));
 
     for (unsigned long step = 0;; step++) {
         
@@ -71,13 +71,17 @@ FMIStatus simulateFMI1CS(
 
 TERMINATE:
 
-    if (status != FMIFatal) {
+    if (status < FMIError) {
 
         const FMIStatus terminateStatus = FMI1TerminateSlave(S);
 
-        if (terminateStatus != FMIFatal) {
-            FMI1FreeSlaveInstance(S);
+        if (terminateStatus > status) {
+            status = terminateStatus;
         }
+    }
+
+    if (status != FMIFatal) {
+        FMI1FreeSlaveInstance(S);
     }
 
     return status;
