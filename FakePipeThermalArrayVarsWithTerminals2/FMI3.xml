@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fmiModelDescription fmiVersion="3.0"
+                     modelName="Fake Pipe Thermal Array Vars with Terminals2"
+                     generationTool="Reference FMUs (development build)"
+                     instantiationToken="{E083415C-0907-40D5-A12F-8D45990322C3}"
+                     variableNamingConvention="structured">
+
+  <ModelExchange
+    modelIdentifier="FakePipeThermalArrayVarsWithTerminals2"
+    canGetAndSetFMUState="true"
+    canSerializeFMUState="true"/>
+
+  <CoSimulation
+    modelIdentifier="FakePipeThermalArrayVarsWithTerminals2"
+    canGetAndSetFMUState="true"
+    canSerializeFMUState="true"
+    canHandleVariableCommunicationStepSize="true"
+    providesIntermediateUpdate="true"
+    canReturnEarlyAfterIntermediateUpdate="true"
+    fixedInternalStepSize="1e-2"/>
+
+  <LogCategories>
+    <Category name="logEvents" description="Log events"/>
+    <Category name="logStatusError" description="Log error messages"/>
+  </LogCategories>
+
+  <DefaultExperiment startTime="0" stopTime="10" stepSize="1e-2"/>
+
+  <ModelVariables>
+    <Float64 name="time" valueReference="0" causality="independent" variability="continuous" description="Simulation time"/>
+
+    <Float64 name="contact_area_fixed_param" valueReference="1" description="contact area" causality="parameter" variability="fixed" initial="exact" start="1"/>
+
+    <Float64 name="tcz1.wall_temp" valueReference="2" description="wall temperature" causality="input" variability="continuous" start="293.15">
+      <Dimension valueReference="3"/>
+    </Float64>
+
+    <UInt64 name="number_of_elements" valueReference="3" description="Number of elements in the thermal communication line" causality="output" variability="constant"
+            start="5" />
+
+    <!-- Mesh details -->
+    <UInt64 name="__model_grid.element_dimensionality" valueReference="4" causality="output" variability="constant"
+            start="1">
+    </UInt64>
+    
+    <Float64 name="__model_grid.grid_coordinates" valueReference="5" description="vertex positions of the thermal communication line" causality="output" variability="discrete">
+      <Dimension start="6"/>
+      <Dimension start="3"/>
+    </Float64>
+
+    <UInt64 name="__model_grid.element_type" valueReference="6" description="elements of the thermal communication line" causality="output" variability="discrete">
+      <Dimension valueReference="3"/>
+    </UInt64>
+
+    <UInt64 name="__model_grid.element_connectivity" valueReference="7" description="vertex of each element of the thermal communication line" causality="output" variability="discrete">
+       <Dimension start="10"/> 
+    </UInt64>
+
+    <UInt64 name="tcz1.__element_list" valueReference="8" causality="output" variability="discrete">
+      <Dimension valueReference="3"/>
+    </UInt64>
+
+    <UInt64 name="tcz1.__grid_location" valueReference="9" causality="output" variability="constant"
+            start="0">
+    </UInt64>
+
+    <Float64 name="tcz1.__surface_area" valueReference="10" description="element area" causality="output" variability="discrete">
+      <Dimension valueReference="3"/>
+    </Float64>
+
+    <Float64 name="tcz1.fluid_temp" valueReference="11" description="fluid temperature" causality="output" variability="continuous">
+      <Dimension valueReference="3"/>
+    </Float64>
+
+    <Float64 name="tcz1.fluid_htc" valueReference="12" description="fluid htc" causality="output" variability="continuous">
+      <Dimension valueReference="3"/>
+    </Float64>
+
+  </ModelVariables>
+
+  <ModelStructure>
+    <Output valueReference="3"/>
+    <Output valueReference="4"/>
+    <Output valueReference="5"/>
+    <Output valueReference="6"/>
+    <Output valueReference="7"/>
+    <Output valueReference="8"/>
+    <Output valueReference="9"/>
+    <Output valueReference="10"/>
+    <Output valueReference="11"/>
+    <Output valueReference="12"/>
+    <InitialUnknown valueReference="11"/>
+    <InitialUnknown valueReference="12"/>
+  </ModelStructure>
+
+</fmiModelDescription>

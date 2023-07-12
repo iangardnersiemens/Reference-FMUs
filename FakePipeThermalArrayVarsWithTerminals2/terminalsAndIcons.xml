@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fmiTerminalsAndIcons fmiVersion="3.0">
+	<Terminals>
+		<Terminal name="tcz1" matchingRule="sequence" terminalKind="simcenter.thermal.convective" description="convective thermal connection with wall temperature in and fluid temperature and HTC out">
+      <TerminalMemberVariable variableKind="signal" variableName="tcz1.__grid_location" />
+      <TerminalMemberVariable variableKind="signal" variableName="tcz1.__element_list" />
+      <TerminalMemberVariable variableKind="signal" variableName="tcz1.__surface_area" />
+      <TerminalMemberVariable variableKind="signal" variableName="tcz1.wall_temp" />
+      <TerminalMemberVariable variableKind="signal" variableName="tcz1.fluid_temp" />
+      <TerminalMemberVariable variableKind="signal" variableName="tcz1.fluid_htc" />
+		</Terminal>
+	</Terminals>
+</fmiTerminalsAndIcons>
